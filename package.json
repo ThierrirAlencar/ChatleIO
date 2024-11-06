@@ -1,0 +1,20 @@
+{
+  "name": "chatleio",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "dev": "npx tsx watch src/server.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "@types/node": "^22.9.0",
+    "@types/ws": "^8.5.13",
+    "fastify": "^5.1.0",
+    "socket.io": "^4.8.1",
+    "typescript": "^5.6.3",
+    "ws": "^8.18.0"
+  }
+}
