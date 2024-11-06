@@ -1,0 +1,19 @@
+.messageSpace{
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+    flex-direction: column;
+    padding:15px;
+
+}
+body {
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+    height: 80vh;
+    overflow: auto;
+    flex-direction: column;
+}
