@@ -1,0 +1,13 @@
+-- CreateTable
+CREATE TABLE "User" (
+    "Id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    "Name" TEXT NOT NULL
+);
+
+-- CreateTable
+CREATE TABLE "Message" (
+    "Id" TEXT NOT NULL PRIMARY KEY,
+    "Content" TEXT NOT NULL,
+    "u_id" INTEGER NOT NULL,
+    CONSTRAINT "Message_u_id_fkey" FOREIGN KEY ("u_id") REFERENCES "User" ("Id") ON DELETE RESTRICT ON UPDATE CASCADE
+);
