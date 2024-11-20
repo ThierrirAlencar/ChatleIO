@@ -1,11 +1,23 @@
 .messageSpace{
     display:flex;
-    justify-content: center;
-    align-items: center;
+    justify-content: left;
+    align-items: start;
     align-content: center;
     flex-direction: column;
-    padding:15px;
+    padding:65px;
+    overflow:scroll;
+    height:400px;
+    background-color:#dbdbdb;
 
+    margin:10px;
+    border-radius:15px
+}
+.input-space{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    width:200px;
+    height:100px;
 }
 body {
     display: flex;

@@ -12,15 +12,40 @@
 
 const socket = io("ws://localhost:8080");
 
-//listen to message event
-socket.on("message",(text)=>{
-    const el = document.createElement("p");
-    el.innerHTML = text;
-    document.querySelector(".messageSpace").appendChild(el);
+if(localStorage.getItem("Id")){
+
+}else{
+    const userName = prompt("Informe seu userName")
+    socket.emit("auth",userName)
+    socket.on("Logged",(id)=>{
+        localStorage.setItem("Id",id)
+    })
+}
+
+
+
+
+//send in search of a message
+socket.emit("readMessage")
+
+socket.on("recieveContent",(data)=>{
+    const messageSpace = document.querySelector(".messageSpace");
+    const deleteList = messageSpace.querySelectorAll("p")
+
+    deleteList.forEach((e)=>{
+        document.removeChild(e)
+    })
+    console.log(data)
+    data.forEach(element => {
+
+        const eDiv = document.createElement("p");
+        eDiv.innerHTML = `${element.UserName} :   ${element.Content}`
+        messageSpace.appendChild(eDiv)
+    });
 })
 
 document.querySelector("button").addEventListener("click",()=>{
     const content = document.querySelector("input").value
     //refers to wich part we want to use
-    socket.emit("message",content)
+    socket.emit("message",content,Number(localStorage.getItem("Id")))
 })
