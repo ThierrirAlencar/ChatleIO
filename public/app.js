@@ -11,15 +11,28 @@
 // })
 
 const socket = io("ws://localhost:8080");
-
-if(localStorage.getItem("Id")){
-
-}else{
-    const userName = prompt("Informe seu userName")
-    socket.emit("auth",userName)
+const LoginOrSingup = async()=>{
+    const userName = prompt("Informe seu nome (se nao tiver feito login digite a primeira vez)")
+    const userEmail = prompt("Informe seu Email (se nunca tiver entrado digite a primeira vez)")
+    const userPassword = prompt("Informe sua senha (se nao tiver crie uma)")
+    socket.emit("auth",userName,userEmail,userPassword)
     socket.on("Logged",(id)=>{
         localStorage.setItem("Id",id)
     })
+}
+
+if(localStorage.getItem("Id")){
+    socket.emit("CheckId",Number(localStorage.getItem("Id")))
+    socket.on("checkIdExists",async(test)=>{
+        if(test){
+
+        }else{
+            alert("Usuario nao encontrado")
+           await LoginOrSingup()
+        }
+    })
+}else{
+    LoginOrSingup()
 }
 
 

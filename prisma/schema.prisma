@@ -9,8 +9,9 @@ datasource db {
 
 model User{
   Id Int @id @default(autoincrement())
-  Name String @unique
-
+  Name String
+  Email String @unique
+  Password String
   messagesList Message[]
   RoomsList Room[]
 }

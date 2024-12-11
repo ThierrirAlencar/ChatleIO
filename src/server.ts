@@ -57,11 +57,23 @@ io.on("connection",async(socket)=>{
             }
         })
     })
-    socket.on("auth",async(UserName:string)=>{
+    socket.on("CheckId",async(Id:number)=>{
+        const doesTheUserExists = await prisma.user.findUnique({
+            where:{
+                Id
+            }
+        })
+        if(doesTheUserExists){
+            io.emit("checkIdExists",true)
+        }else{
+            io.emit("checkIdExists",false)
+        }
+    })
+    socket.on("auth",async(UserName:string,Email:string,Password:string)=>{
         console.log("Auth called")
         const checkIfUserExists = await prisma.user.findUnique({
             where:{
-                Name:UserName
+                Email
             }
         })
         if(checkIfUserExists){
@@ -72,7 +84,7 @@ io.on("connection",async(socket)=>{
             console.log("signed-in")
             const created = await prisma.user.create({
                 data:{
-                    Name:UserName
+                    Email,Name:UserName,Password:Password
                 }
             })
             io.emit("Logged",created.Id)
