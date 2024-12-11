@@ -12,6 +12,14 @@ model User{
   Name String @unique
 
   messagesList Message[]
+  RoomsList Room[]
+}
+
+model Room{
+  Id Int @id @default(autoincrement())
+  RoomName String 
+  RoomOwner Int
+  uRef User @relation(fields: [RoomOwner],references: [Id])
 }
 
 model Message{

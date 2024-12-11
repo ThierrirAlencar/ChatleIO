@@ -1,3 +1,23 @@
+body{
+    background-color:black;
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+    height: 90vh;
+    overflow: auto;
+    background-image:url("styles/Bg.svg");
+    flex-direction: column;
+}
+
+*{
+    font-family: "Roboto", sans-serif;
+    font-weight: 500;
+    font-style: normal;
+    color:white
+}
+
 .messageSpace{
     display:flex;
     justify-content: left;
@@ -6,26 +26,32 @@
     flex-direction: column;
     padding:65px;
     overflow:scroll;
-    height:400px;
+    height:500px;
+    width:600px;
     background-color:#dbdbdb;
-
-    margin:10px;
     border-radius:15px
 }
 .input-space{
+    margin:50px;
     display:flex;
     justify-content:center;
     align-items:center;
-    width:200px;
-    height:100px;
+    flex-direction:column;
+    gap:15%;
+    width:700px;
+    background-color:#011522;
+    padding:20px;
+    border-radius:15px;
+
 }
-body {
-    display: flex;
-    flex-wrap: nowrap;
-    justify-content: center;
-    align-items: center;
-    align-content: center;
-    height: 80vh;
-    overflow: auto;
-    flex-direction: column;
+.input-space input{
+    width:500px;
+    margin-left:-85%;
+    font-weight:bold
+}
+.input-space button{
+    margin-top:15px;
+    width:300px;
+    border:none;
+
 }

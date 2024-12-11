@@ -6,15 +6,41 @@
     <title>Document</title>
     <script src="https://cdn.socket.io/4.8.0/socket.io.min.js" integrity="sha384-OoIbkvzsFFQAG88r+IqMAjyOtYDPGO0cqK5HF5Uosdy/zUEGySeAzytENMDynREd" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="./styles/button.css">
+    <link rel="stylesheet" href="styles/card.css">
+    <link rel="stylesheet" href="styles/input.css">
 </head>
 <body>
 
-    <div class="messageSpace">
-        
+    <div class="card messageSpace" >
+
+        <div class="tools">
+
+          <div class="circle">
+            <span class="red box"></span>
+          </div>
+          <div class="circle">
+            <span class="yellow box"></span>
+          </div>
+          <div class="circle">
+            <span class="green box"></span>
+          </div>
+        </div>
+        <div>
+            <h3>Room Name</h3>
+        </div>
+        <div class="card__content">
+        </div>
     </div>
+
     <div class="input-space" >
-        <input type="text" placeholder="insira aqui a mensagem">
-        <button>Clickme</button>
+        <div class="form__group field">
+            <input type="text" class="form__field" placeholder="Name" required="">
+            <label for="name" class="form__label">Mensagem</label>
+        </div>
+        <button>
+            Enviar Mensagem
+        </button>
     </div>
     
 </body>

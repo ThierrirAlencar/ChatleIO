@@ -29,7 +29,7 @@ if(localStorage.getItem("Id")){
 socket.emit("readMessage")
 
 socket.on("recieveContent",(data)=>{
-    const messageSpace = document.querySelector(".messageSpace");
+    const messageSpace = document.querySelector(".card__content");
     const deleteList = messageSpace.querySelectorAll("p")
 
     deleteList.forEach((e)=>{
