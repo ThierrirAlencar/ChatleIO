@@ -55,3 +55,116 @@ body{
     border:none;
 
 }
+
+
+
+body{
+    background-color:black;
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+    height: 90vh;
+    overflow: auto;
+    background-image:url("styles/Bg.svg");
+    flex-direction: column;
+}
+
+*{
+    font-family: "Roboto", sans-serif;
+    font-weight: 500;
+    font-style: normal;
+    color:white;
+}
+
+.messageSpace{
+    display:flex;
+    justify-content: left;
+    align-items: start;
+    align-content: center;
+    flex-direction: column;
+    padding:65px;
+    overflow:scroll;
+    height:500px;
+    width:600px;
+    background-color:#dbdbdb;
+    border-radius:15px;
+}
+
+.input-space{
+    margin:50px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    flex-direction:column;
+    gap:15%;
+    width:700px;
+    background-color:#011522;
+    padding:20px;
+    border-radius:15px;
+}
+
+.input-space input{
+    width:500px;
+    margin-left:-85%;
+    font-weight:bold;
+}
+
+.input-space button{
+    margin-top:15px;
+    width:300px;
+    border:none;
+}
+
+/* Recursividade para dispositivos móveis (telefone) */
+@media screen and (max-width: 768px) {
+    .messageSpace{
+        width: 90%; /* Ajusta a largura para telas menores */
+        height: 400px; /* Reduz a altura para telas menores */
+        padding: 30px; /* Ajusta o padding para telas menores */
+    }
+
+    .input-space{
+        width: 90%; /* Ajusta a largura para caber em telas menores */
+        margin: 20px;
+        gap: 10%; /* Reduz o gap entre os itens */
+    }
+
+    .input-space input{
+        width: 90%; /* Ajusta a largura do input para dispositivos móveis */
+        margin-left: 0;
+        font-size: 16px; /* Ajusta o tamanho da fonte */
+    }
+
+    .input-space button{
+        width: 80%; /* Ajusta a largura do botão */
+        font-size: 16px; /* Ajusta o tamanho da fonte do botão */
+    }
+}
+
+@media screen and (max-width: 480px) {
+    /* Para telas ainda menores (smartphones) */
+    .messageSpace{
+        padding: 20px;
+        height: 300px; /* Reduz a altura ainda mais para dispositivos muito pequenos */
+    }
+
+    .input-space{
+        width: 100%; /* Garante que a input space ocupe toda a largura da tela */
+        margin: 10px;
+    }
+
+    .input-space input,
+    .input-space button{
+        width: 100%; /* Garante que o input e o botão ocupem 100% da largura */
+    }
+
+    .input-space input{
+        font-size: 14px; /* Ajusta o tamanho da fonte para telas pequenas */
+    }
+
+    .input-space button{
+        font-size: 14px; /* Ajusta o tamanho da fonte do botão para telas pequenas */
+    }
+}
