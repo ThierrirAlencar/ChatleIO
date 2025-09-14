@@ -10,6 +10,7 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "@fastify/static": "^8.2.0",
     "@prisma/client": "^5.22.0",
     "@types/node": "^22.9.0",
     "@types/ws": "^8.5.13",

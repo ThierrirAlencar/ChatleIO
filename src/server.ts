@@ -2,11 +2,44 @@ import fastify from "fastify";
 import { createServer } from "http";
 import { Server } from 'socket.io';
 import { prisma } from "./lib/prisma";
+import path, { dirname } from "path";
+import staticPlugin from '@fastify/static';
+import { fileURLToPath } from "url";
+import { readFile } from "fs";
  
+
+
+
 const app = fastify();
 //transforma a instancia do fastify em um server .http
+const server = createServer((req, res) => {
+  let filePath = "";
 
-const server = createServer(app.server)
+  if (req.url === "/") {
+    filePath = path.join(process.cwd(), "public", "index.html");
+    res.writeHead(200, { "Content-Type": "text/html" });
+  } else if (req.url === "/app.js") {
+    filePath = path.join(process.cwd(), "public", "app.js");
+    res.writeHead(200, { "Content-Type": "application/javascript" });
+  } else if (req.url?.endsWith(".css")) {
+    filePath = path.join(process.cwd(), "public", req.url);
+    res.writeHead(200, { "Content-Type": "text/css" });
+  } else {
+    res.writeHead(404);
+    res.end("Not found");
+    return;
+  }
+
+  readFile(filePath, (err, data) => {
+    if (err) {
+      res.writeHead(500);
+      res.end("Erro interno do servidor");
+    } else {
+      res.end(data);
+    }
+  });
+});
+
 
 //cria um server socket.io a partir do server fastify 
 const io =  new Server(server,{
@@ -25,7 +58,41 @@ io.on("connection",async(socket)=>{
     console.log("New client connected!");
 
     socket.on("readMessage",async(message)=>{
-        console.log("read message called")
+        console.log("client emit: readMessage")
+        
+        const messageList = await prisma.message.findMany();
+        const psP:readMessageEmitInterface[] = [];
+       
+        for(let i =0;i<messageList.length;i++){
+            const e = messageList[i];
+            const user = await prisma.user.findUnique({
+                where:{
+                    Id:e.u_id
+                }
+            })
+            if(user){
+                const ps:readMessageEmitInterface = {
+                    Content:e.Content,
+                    UserName:user.Name
+                }
+                psP.push(ps)
+            }
+        }
+        console.log("server emit: recieveContent")
+        io.emit("recieveContent",psP)
+    })
+
+    socket.on("message",async(message,id)=>{
+        console.log("client emit: message")
+
+        await prisma.message.create({
+            data:{
+                Content:message,
+                u_id:id
+            }
+        })
+        //recarregar a lista inteira
+        console.log("server emit: recieveContent")
         const messageList = await prisma.message.findMany();
         const psP:readMessageEmitInterface[] = [];
        
@@ -46,17 +113,6 @@ io.on("connection",async(socket)=>{
         }
         io.emit("recieveContent",psP)
     })
-
-    socket.on("message",async(message,id)=>{
-        console.log("message event called")
-        
-        await prisma.message.create({
-            data:{
-                Content:message,
-                u_id:id
-            }
-        })
-    })
     socket.on("CheckId",async(Id:number)=>{
         const doesTheUserExists = await prisma.user.findUnique({
             where:{
@@ -69,6 +125,7 @@ io.on("connection",async(socket)=>{
             io.emit("checkIdExists",false)
         }
     })
+
     socket.on("auth",async(UserName:string,Email:string,Password:string)=>{
         console.log("Auth called")
         const checkIfUserExists = await prisma.user.findUnique({
@@ -92,16 +149,22 @@ io.on("connection",async(socket)=>{
     })
 })
 
-//common backend
-app.get("/",async(req,res)=>{
-    res.send({
-        message:"Bem vindo ao server de websocket"
-    })
+// Add static file serving
+app.register(staticPlugin, {
+  root: path.join(process.cwd(),"public"),
+  prefix: '/public/', // optional
 })
 
 
-const port = 8080
+// Modify the GET route
+app.get("/", async (req, res) => {
+    console.log("get / called")
+    return res.sendFile('index.html');
+})
 
-server.listen(port,()=>{
-    console.log("server running at:"+port)
+
+const port = 5647
+const host = "127.0.0.1"
+server.listen(port,host,()=>{
+    console.log("server running at:http://"+host+":"+port)
 })

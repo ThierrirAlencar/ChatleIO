@@ -1,64 +1,74 @@
-// const socket = new WebSocket("ws://localhost:8080");
+// Conectar ao servidor Socket.IO
+const socket = io("http://localhost:5647");
 
-// //listen for messages 
-// socket.onmessage = ({data})=>{
-//     console.log("message from the server", data)
-// }
+// Tratamento de erros
+socket.on("connect_error", (error) => {
+  console.error("Connection error:", error);
+  alert("Falha ao conectar no servidor");
+});
 
-// //send a message
-// document.querySelector("button").addEventListener("click",()=>{
-//     socket.send("Hello World")
-// })
+socket.on("error", (error) => {
+  console.error("Socket error:", error);
+  alert("Ocorreu um erro de conexão");
+});
 
-const socket = io("ws://localhost:8080");
-const LoginOrSingup = async()=>{
-    const userName = prompt("Informe seu nome (se nao tiver feito login digite a primeira vez)")
-    const userEmail = prompt("Informe seu Email (se nunca tiver entrado digite a primeira vez)")
-    const userPassword = prompt("Informe sua senha (se nao tiver crie uma)")
-    socket.emit("auth",userName,userEmail,userPassword)
-    socket.on("Logged",(id)=>{
-        localStorage.setItem("Id",id)
-    })
+// Função para login/cadastro
+const LoginOrSingup = async () => {
+  const userName = prompt("Informe seu nome (se não tiver feito login digite pela primeira vez)");
+  const userEmail = prompt("Informe seu Email (se nunca tiver entrado digite pela primeira vez)");
+  const userPassword = prompt("Informe sua senha (se não tiver, crie uma)");
+
+  socket.emit("auth", userName, userEmail, userPassword);
+
+  socket.once("Logged", (id) => {
+    localStorage.setItem("Id", id);
+  });
+};
+
+// Verificação de usuário já logado
+if (localStorage.getItem("Id")) {
+  socket.emit("CheckId", Number(localStorage.getItem("Id")));
+  socket.once("checkIdExists", async (test) => {
+    if (!test) {
+      alert("Usuário não encontrado");
+      await LoginOrSingup();
+    }
+  });
+} else {
+  LoginOrSingup();
 }
 
-if(localStorage.getItem("Id")){
-    socket.emit("CheckId",Number(localStorage.getItem("Id")))
-    socket.on("checkIdExists",async(test)=>{
-        if(test){
+// Pedir mensagens ao servidor
+socket.emit("readMessage");
 
-        }else{
-            alert("Usuario nao encontrado")
-           await LoginOrSingup()
-        }
-    })
-}else{
-    LoginOrSingup()
-}
+// Receber mensagens
+socket.on("recieveContent", (data) => {
+  const messageSpace = document.getElementById("messageSpace");
 
+  // Limpar mensagens antigas
+  messageSpace.innerHTML = "";
 
+  // Adicionar mensagens recebidas
+  data.forEach((element) => {
+    const eDiv = document.createElement("p");
+    eDiv.classList.add("mb-1"); // pequeno espaçamento entre mensagens
+    eDiv.innerHTML = `<strong>${element.UserName}:</strong> ${element.Content}`;
+    messageSpace.appendChild(eDiv);
+  });
 
+  // Scroll para a última mensagem
+  messageSpace.scrollTop = messageSpace.scrollHeight;
+});
 
-//send in search of a message
-socket.emit("readMessage")
+// Enviar mensagens
+document.getElementById("messageForm").addEventListener("submit", (e) => {
+  e.preventDefault();
 
-socket.on("recieveContent",(data)=>{
-    const messageSpace = document.querySelector(".card__content");
-    const deleteList = messageSpace.querySelectorAll("p")
+  const input = document.getElementById("messageInput");
+  const content = input.value.trim();
 
-    deleteList.forEach((e)=>{
-        document.removeChild(e)
-    })
-    console.log(data)
-    data.forEach(element => {
-
-        const eDiv = document.createElement("p");
-        eDiv.innerHTML = `${element.UserName} :   ${element.Content}`
-        messageSpace.appendChild(eDiv)
-    });
-})
-
-document.querySelector("button").addEventListener("click",()=>{
-    const content = document.querySelector("input").value
-    //refers to wich part we want to use
-    socket.emit("message",content,Number(localStorage.getItem("Id")))
-})
+  if (content) {
+    socket.emit("message", content, Number(localStorage.getItem("Id")));
+    input.value = "";
+  }
+});
