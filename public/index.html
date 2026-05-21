@@ -5,52 +5,93 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ChatleIO</title>
 
-  <!-- Bootstrap CSS -->
+  <!-- Bootstrap -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 
-  <script src="https://cdn.socket.io/4.8.0/socket.io.min.js" integrity="sha384-OoIbkvzsFFQAG88r+IqMAjyOtYDPGO0cqK5HF5Uosdy/zUEGySeAzytENMDynREd" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="./style.css">
+  <script src="https://cdn.socket.io/4.8.0/socket.io.min.js"></script>
 </head>
-<body class="bg-light">
+
+<header class="main-header">
+    
+    <div class="header-content">
+        <div>
+            <h1 class="header-title">ChatleIO</h1>
+            <p class="header-subtitle">
+                Sistema de comunicação em tempo real
+            </p>
+        </div>
+
+        <nav class="header-actions">
+            <button class="header-btn" id="btnHome">
+                Início
+            </button>
+            <button class="header-btn" id="btnSettings">
+                Configurações
+            </button>
+            <button class="header-btn" id="btnLogout">
+                Logout
+            </button>
+        </nav>
+    </div>
+
+</header>
+
+<body>
 
   <div class="container py-5">
 
-    <!-- Card da sala -->
-    <div class="card shadow-sm mb-4">
-      <div class="card-header d-flex justify-content-between align-items-center">
+    <div class="chat-card">
+
+      <div class="chat-header d-flex justify-content-between align-items-center">
+
         <div class="d-flex gap-2">
-          <span class="badge bg-danger rounded-circle p-2"></span>
-          <span class="badge bg-warning rounded-circle p-2"></span>
-          <span class="badge bg-success rounded-circle p-2"></span>
+          <span class="window-button btn-1"></span>
+          <span class="window-button btn-2"></span>
+          <span class="window-button btn-3"></span>
         </div>
-        <h5 class="mb-0">Teste Rápido</h5>
+
+        <h5 class="m-0 fw-bold">
+          ChatleIO
+        </h5>
+
+      </div> 
+
+      <div id="messageSpace" description="Espaço para as mensagens" class="chat-body">
+        <!-- mensagens -->
       </div>
 
-      <div class="card-body" id="messageSpace" style="height: 300px; overflow-y: auto;">
-        <!-- Mensagens vão aparecer aqui -->
-      </div>
     </div>
 
-    <!-- Input de mensagem -->
-    <form id="messageForm" class="row g-2">
+    <form id="messageForm" class="row mt-4 g-3">
+
       <div class="col-9">
-        <input type="text" class="form-control" id="messageInput" placeholder="Digite sua mensagem..." required>
+        <input
+          type="text"
+          class="form-control"
+          id="messageInput"
+          placeholder="Digite sua mensagem..."
+          required
+        >
       </div>
+
       <div class="col-3 d-grid">
-        <button type="submit" class="btn btn-primary">
-          Enviar Mensagem
+        <button type="submit" class="send-btn">
+          Enviar
         </button>
       </div>
+
     </form>
 
-  </div>
+</div>
 
-  <!-- Bootstrap JS -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<footer>
+  <a>Made by CiringaMen</a>
+</footer>
 
-  <script defer src="./app.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
-  <footer class="row p-2 ">
-    <a>Made by CiringaMen</a>
-  </footer>
+<script defer src="./app.js"></script>
+
 </body>
 </html>
